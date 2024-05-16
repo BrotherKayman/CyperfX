@@ -1,7 +1,8 @@
 import platform
 import psutil
 from tkinter import Tk, filedialog, messagebox
-from ttkbootstrap import Style
+import ttkbootstrap as ttkB
+from ttkbootstrap import ttk
 from ttkbootstrap.widgets import Treeview, Button
 import webbrowser  # For opening the default email app
 import subprocess
@@ -21,8 +22,8 @@ elif os_name in ["Linux", "Darwin"]:
     import subprocess  # Used for running commands on Linux and macOS
 
 # Create the main application window
-style = Style(theme="solar")
-root = style.master
+root = ttkB.Window(themename="superhero")
+root.geometry('1000x500')
 root.title("Computer Diagnostic Tool")
 
 # Define column headers for the Treeview widget
@@ -57,10 +58,11 @@ def add_result_to_treeview(component, health_status, details, solutions=""):
     style_map = {"Good": "success", "Warning": "warning", "Error": "danger"}
     treeview.insert("", "end", values=(component, health_status, details, solutions), tags=(style_map.get(health_status, "success")))
 
-    # Apply styles to rows
-    treeview.tag_configure("success", background="#d4edda")
-    treeview.tag_configure("danger", background="#f8d7da")
-    treeview.tag_configure("warning", background="#fff3cd")
+    # Apply styles to rows [Themes]
+treeview.tag_configure("success", background="#7fbf7f")  # Darker green
+treeview.tag_configure("danger", background="#e28f8f")   # Darker red
+treeview.tag_configure("warning", background="#e6db88", foreground='black')  # Darker yellow
+
 
 # Function to clear the Treeview before adding new results
 def clear_treeview():
@@ -314,7 +316,7 @@ def convert_treeview_to_pdf(file_path):
     
     # Define a style for the table
     style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.ReportLabLightBlue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -366,11 +368,11 @@ def save_pdf_only():
 
 # Create a button to send an email with a PDF attachment
 send_email_button = Button(root, text="Send Email with PDF", command=send_email_with_pdf)
-send_email_button.pack(side="left", padx=5)
+send_email_button.pack(side="right", padx=30, pady=20)
 
 # Create a button to save the PDF only
 save_pdf_button = Button(root, text="Save PDF", command=save_pdf_only)
-save_pdf_button.pack(side="left", padx=5)
+save_pdf_button.pack(side="left", padx=30, pady=20)
 
 # Start the diagnostic process and main loop
 refresh_diagnostics()

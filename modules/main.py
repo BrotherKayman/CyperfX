@@ -17,9 +17,10 @@ class Cyperfx:
 
     def App(self):
         self.app = ttkB.Window(themename='superhero')
+        self.app.title('CyperfX')
         self.app.geometry('800x700')
-        self.app.maxsize(width=900, height=650)
-        self.app.minsize(width=900, height=650)
+        self.app.maxsize(width=860, height=650)
+        self.app.minsize(width=860, height=650)
 
         # GUI Function Calls
         self.create_gui()
@@ -27,6 +28,7 @@ class Cyperfx:
         self.update_cpu_meter()
         self.update_ram_meter()
         self.update_system_temperature()
+        self.update_disc_data()
 
         # Start the application
         self.app.mainloop()
@@ -38,7 +40,7 @@ class Cyperfx:
 
         # Create Frame for tabs
         self.monitor_tabs = ttkB.Frame(self.app, height=500, width=700, style='info.Frame')
-        self.monitor_tabs.place(x=150, y=100)
+        self.monitor_tabs.place(x=150, y=80)
 
         # Sys Monitor
         self.sys_monitor_tab = ttkB.Frame(self.monitor_tabs)
@@ -48,14 +50,13 @@ class Cyperfx:
         self.usage = ttkB.Frame(self.sys_monitor_tab, height=200, width=600)
         self.usage.place(x=70, y=50)
 
-        self.title = ttk.Label(self.sys_monitor_tab,text='CPU and RAM Use')
+        self.title = ttk.Label(self.sys_monitor_tab, text='CPU and RAM Use')
         self.title.place(x=10, y=10)
 
         # Create CPU meter
         self.cpu_meter = ttkB.Meter(
             self.usage,
             metersize=150,
-            
             bootstyle='',
             stripethickness=20,
             amounttotal=100,
@@ -96,11 +97,20 @@ class Cyperfx:
             metertype='full'
         )
         self.temperature_meter.place(x=390, y=15)
-
-        #-------------------------------------------------------------------------
-        #Add Disc frame
+        
+        # Create Canvas for the line
+        self.canvas = tk.Canvas(self.sys_monitor_tab, width=550, height=2, bg='#17a2b8', highlightthickness=0)
+        self.canvas.place(x=110, y=260)
+        # Draw a line on the Canvas
+        self.canvas.create_line(0, 1, 650, 1, fill='white')
+        
+        #------------------------------------------------------------------------
+        # Add Disc frame
         self.disc_frame = ttkB.Frame(self.sys_monitor_tab, height=250, width=650)
-        self.disc_frame.place(x=70, y=250)
+        self.disc_frame.place(x=70, y=270)
+
+        self.label_title = ttkB.Label(self.sys_monitor_tab, text='Disc Monitor')
+        self.label_title.place(x=10, y=250)
 
         # Create disc free meter
         self.disc_free = ttkB.Meter(
@@ -108,7 +118,7 @@ class Cyperfx:
             metersize=160,
             bootstyle='',
             stripethickness=20,
-            amounttotal=500,
+            amounttotal=10,
             subtext='Disc Available',
             textright='GB', 
             subtextfont='Helvetica 8',
@@ -117,17 +127,12 @@ class Cyperfx:
         )
         self.disc_free.place(x=10, y=35)
         
-        # Calculate and set initial free disk space
-        disk_info = psutil.disk_usage('/')
-        free_gb = disk_info.free / (1024 ** 3)
-        self.disc_free['amountused'] = f'{free_gb:.2f}'
-        
         # Create disc usage progress bar and label
         self.disc_usage_label = ttkB.Label(
             self.disc_frame,
             text='Disc Usage'
         )
-        self.disc_usage_label.place(x=270, y=135)
+        self.disc_usage_label.place(x=230, y=135)
         
         # Create disc usage progress bar
         self.disc_usage = ttkB.Progressbar(
@@ -136,21 +141,21 @@ class Cyperfx:
             length=200,
             value=psutil.disk_usage('/').percent
         )
-        self.disc_usage.place(x=350, y=130, height=30)
+        self.disc_usage.place(x=310, y=130, height=30)
 
         # Create disc usage value label
         self.disc_usage_value = ttkB.Label(
             self.disc_frame,
             text=f'{self.disc_usage["value"]:.2f}%'
         )
-        self.disc_usage_value.place(x=560, y=135)
+        self.disc_usage_value.place(x=520, y=135)
 
         # Create disc used label and progress bar
         self.disc_used_label = ttkB.Label(
             self.disc_frame,
             text='Disc Used'
         )
-        self.disc_used_label.place(x=270, y=85)
+        self.disc_used_label.place(x=230, y=85)
 
         self.disc_used = ttkB.Progressbar(
             self.disc_frame,
@@ -158,13 +163,13 @@ class Cyperfx:
             length=200,
             value=0
         )
-        self.disc_used.place(x=350, y=85, height=30)
+        self.disc_used.place(x=310, y=85, height=30)
 
         self.disc_used_value = ttkB.Label(
             self.disc_frame,
             text='0.00 GB'
         )
-        self.disc_used_value.place(x=560, y=85)
+        self.disc_used_value.place(x=520, y=85)
       
         # Initially show the System Monitor tab
         self.show_sys_monitor()
@@ -187,6 +192,9 @@ class Cyperfx:
 
         self.tech_button = ttkB.Button(self.app, text='\nTech Help', style='info.TButton', command=self.tech_help) 
         self.tech_button.place(y=460, x=10, height=100, width=140)
+        
+        self.exit_button = ttkB.Button(self.app, text='Exit', style='danger', command=self.quit_app)
+        self.exit_button.place(y=600, x=800)
 
     def update_cpu_meter(self):
         """Update the CPU meter."""
@@ -250,10 +258,14 @@ class Cyperfx:
         except Exception as e:
             return "Error retrieving system temperature: {}".format(e)
     
-    # Update disc monitor
     def update_disc_data(self):
         """Update the disc data by updating meters."""
         disk_info = psutil.disk_usage('/')
+
+        # Update the free space meter
+        free_gb = disk_info.free / (1024 ** 3)
+        self.disc_free['amounttotal'] = disk_info.total / (1024 ** 3)
+        self.disc_free['amountused'] = f'{free_gb:.2f}'
 
         self.disc_usage['value'] = disk_info.percent
         self.disc_usage_value.config(text=f"{disk_info.percent:.2f}%")
@@ -263,6 +275,7 @@ class Cyperfx:
         self.disc_used_value.config(text=f"{used_gb:.2f} GB")
 
         self.app.after(1000, self.update_disc_data)
+
 
     def quit_app(self):
         """Exit the application."""
@@ -283,6 +296,7 @@ class Cyperfx:
 
     def diagnose(self):
         subprocess.run(['python3', 'diagnoseTool.py'])
+
     def tech_help(self):
         subprocess.run(['python3','tech_help.py'])
         

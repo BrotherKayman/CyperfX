@@ -95,7 +95,7 @@ class DiscManager:
 
 def main():
     # Main App window
-    app = ttkB.Window(themename='lumen')
+    app = ttkB.Window(themename='superhero')
     app.title("Clean Disc")
     app.geometry('320x150')
     app.maxsize(height=200, width=600)
@@ -105,19 +105,18 @@ def main():
     disc_manager = DiscManager()
 
     # Create "Quick clean" button
-    disc_frame = ttkB.Frame(app, height=400, width=600, style='info')
+    disc_frame = ttkB.Frame(app, height=400, width=600, style='')
     disc_frame.place(x=0,y=0)
 
-    quick_clean_button = Button(disc_frame, text="Quick clean", command=disc_manager.clear_temp_files, style='')
+    quick_clean_button = Button(disc_frame, text="Quick clean", command=disc_manager.clear_temp_files, style='outline')
     quick_clean_button.place(x=50, y=50,height=100, width=150)
 
-    
     # Create "Delete Files" button
-    delete_files_button = Button(disc_frame, text="Delete Files", command=disc_manager.delete_files, style='')
+    delete_files_button = Button(disc_frame, text="Delete Files", command=disc_manager.delete_files, style='outline')
     delete_files_button.place(x=225, y=50, height=100, width=150)
 
     # Create "Exit" button
-    exit_button = Button(disc_frame, text="Exit", command=app.quit, style='danger')
+    exit_button = Button(disc_frame, text="Exit", command=app.quit, style='outline.danger')
     exit_button.place(x=400, y=50, height=100, width=150)
 
     app.mainloop()
