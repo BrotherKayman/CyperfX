@@ -5,6 +5,7 @@ from PIL import Image
 import ttkbootstrap as ttkB
 import platform
 import subprocess
+import threading
 
 Image.CUBIC = Image.BICUBIC
 
@@ -52,6 +53,9 @@ class Cyperfx:
 
         self.title = ttk.Label(self.sys_monitor_tab, text='CPU and RAM Use')
         self.title.place(x=10, y=10)
+
+        self.footer = ttk.Label(self.app, text='Software by M Creative Compound', font='bold 7', style='info', foreground='white', background=None)
+        self.footer.place(x=0, y=620)
 
         # Create CPU meter
         self.cpu_meter = ttkB.Meter(
@@ -190,7 +194,7 @@ class Cyperfx:
         self.diagnose_button = ttkB.Button(self.app, text='\nDiagnose', style='info.TButton', command=self.diagnose)
         self.diagnose_button.place(y=370, x=10, height=100, width=140)
 
-        self.tech_button = ttkB.Button(self.app, text='\nTech Help', style='info.TButton', command=self.tech_help) 
+        self.tech_button = ttkB.Button(self.app, text='\nTech Assist', style='info.TButton', command=self.tech_help) 
         self.tech_button.place(y=460, x=10, height=100, width=140)
         
         self.exit_button = ttkB.Button(self.app, text='Exit', style='danger', command=self.quit_app)
@@ -266,7 +270,6 @@ class Cyperfx:
         free_gb = disk_info.free / (1024 ** 3)
         self.disc_free['amounttotal'] = disk_info.total / (1024 ** 3)
         self.disc_free['amountused'] = f'{free_gb:.2f}'
-
         self.disc_usage['value'] = disk_info.percent
         self.disc_usage_value.config(text=f"{disk_info.percent:.2f}%")
 
@@ -303,3 +306,4 @@ class Cyperfx:
 if __name__ == '__main__':
     app = Cyperfx()
     app.App()
+    

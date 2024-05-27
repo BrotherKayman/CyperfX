@@ -60,8 +60,8 @@ def add_result_to_treeview(component, health_status, details, solutions=""):
 
     # Apply styles to rows [Themes]
 treeview.tag_configure("success", background="#7fbf7f")  # Darker green
-treeview.tag_configure("danger", background="#e28f8f")   # Darker red
-treeview.tag_configure("warning", background="#e6db88", foreground='black')  # Darker yellow
+treeview.tag_configure("danger", background="#e28f8f", foreground='red')   # Darker red
+treeview.tag_configure("warning", background="#e6db88", foreground='red')  # Darker yellow
 
 
 # Function to clear the Treeview before adding new results

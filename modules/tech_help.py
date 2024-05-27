@@ -12,6 +12,6 @@ def open_url(url):
     """
     webbrowser.open(url)
 
-# Example usage:
-url = "https://github.com/Brotherkayman"
+# open url
+url = "https://cyperfx-landing-page.netlify.app"
 open_url(url)

@@ -1,13 +1,14 @@
-import tkinter as tk
-import ttkbootstrap as ttkB
-from ttkbootstrap.widgets import Button
-import shutil
 import os
+import threading
+import tkinter as tk
 from tkinter import filedialog, messagebox
+import ttkbootstrap as ttkB
+import pyclamd
+import shutil
 import platform
 import subprocess
 import ctypes
-
+import main
 class DiscManager:
     """Class to manage disc operations such as clearing temporary files, cache, and deleting files."""
 
@@ -35,6 +36,9 @@ class DiscManager:
         confirm = messagebox.askyesno("Confirm Deletion", "Are you sure you want to clear temporary files, cache, and empty the trash/recycle bin?")
         if not confirm:
             return
+
+        # Calculate initial disk space
+        initial_disk_space = shutil.disk_usage('/').free
 
         # Clear temporary files
         if temp_dir:
@@ -72,20 +76,29 @@ class DiscManager:
         except Exception as e:
             messagebox.showerror("Error", f"Error emptying trash/recycle bin: {e}")
 
+        # Calculate final disk space
+        final_disk_space = shutil.disk_usage('/').free
+
+        # Calculate space freed
+        space_freed = initial_disk_space - final_disk_space
+        space_freed_mb = space_freed / (1024 * 1024)
+
+        messagebox.showinfo("Space Freed", f"Space freed: {space_freed_mb:.2f} MB")
+
     def delete_files(self):
         """Open a file dialog for the user to choose files to delete."""
         file_paths = filedialog.askopenfilenames(title="Select files to delete")
+        total_deleted_size = 0  # Track total size of deleted files
 
         if file_paths:
-            
             confirm = messagebox.askyesno("Confirm Deletion", "Are you sure you want to delete the selected files?")
-            
             if confirm:
                 try:
-                    
                     for file_path in file_paths:
+                        file_size = os.path.getsize(file_path)
+                        total_deleted_size += file_size
                         os.remove(file_path)
-                    messagebox.showinfo("Success", "Selected files deleted.")
+                    messagebox.showinfo("Success", f"Selected files deleted. Total size freed: {total_deleted_size / (1024 * 1024):.2f} MB")
                 except Exception as e:
                     messagebox.showerror("Error", f"Error deleting files: {e}")
             else:
@@ -106,17 +119,17 @@ def main():
 
     # Create "Quick clean" button
     disc_frame = ttkB.Frame(app, height=400, width=600, style='')
-    disc_frame.place(x=0,y=0)
+    disc_frame.place(x=0, y=0)
 
-    quick_clean_button = Button(disc_frame, text="Quick clean", command=disc_manager.clear_temp_files, style='outline')
-    quick_clean_button.place(x=50, y=50,height=100, width=150)
+    quick_clean_button = ttkB.Button(disc_frame, text="Quick clean", command=disc_manager.clear_temp_files, style='outline')
+    quick_clean_button.place(x=50, y=50, height=100, width=150)
 
     # Create "Delete Files" button
-    delete_files_button = Button(disc_frame, text="Delete Files", command=disc_manager.delete_files, style='outline')
+    delete_files_button = ttkB.Button(disc_frame, text="Delete Files", command=disc_manager.delete_files, style='outline')
     delete_files_button.place(x=225, y=50, height=100, width=150)
 
     # Create "Exit" button
-    exit_button = Button(disc_frame, text="Exit", command=app.quit, style='outline.danger')
+    exit_button = ttkB.Button(disc_frame, text="Exit", command=app.quit, style='outline.danger')
     exit_button.place(x=400, y=50, height=100, width=150)
 
     app.mainloop()
