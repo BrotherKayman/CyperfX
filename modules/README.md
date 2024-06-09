@@ -4,9 +4,9 @@
 
 Welcome to CyperfX, a comprehensive solution designed to empower users in monitoring system performance and detecting potential threats. With CyperfX, users can gain valuable insights into their system's health, enabling them to maintain integrity and security with ease.
 
-**Author:** Kagiso Motlhaoleng
+# Author: Kagiso Motlhaoleng
 
-**Date:** [16 May 2024]
+# Date: [16 May 2024]
 
 ### Project Presentation
 [alt image](/CyperfX.png)
@@ -30,7 +30,7 @@ To install CyperfX, follow these simple steps:
 
 Once installed, CyperfX can be run with the following command:
 ```
-python cyperfx.py
+python app.py
 ```
 
 After launching the application, users can:
