@@ -8,7 +8,7 @@ import shutil
 import platform
 import subprocess
 import ctypes
-import main
+import app
 class DiscManager:
     """Class to manage disc operations such as clearing temporary files, cache, and deleting files."""
 
@@ -106,7 +106,7 @@ class DiscManager:
         else:
             messagebox.showinfo("No Files Selected", "No files selected for deletion.")
 
-def main():
+def app():
     # Main App window
     app = ttkB.Window(themename='superhero')
     app.title("Clean Disc")
@@ -135,4 +135,4 @@ def main():
     app.mainloop()
 
 if __name__ == "__main__":
-    main()
+    app()

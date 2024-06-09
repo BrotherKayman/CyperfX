@@ -9,7 +9,7 @@ Welcome to CyperfX, a comprehensive solution designed to empower users in monito
 **Date:** [16 May 2024]
 
 ### Project Presentation
-![GUI](/CyperfX.png)
+[alt image](/CyperfX.png)
 
 - [View Presentation Slides](https://docs.google.com/presentation/d/14nVpC4UVE0jMFtQEHzXDpbqhgvn2BWD4hFFSx-BPy1Y/edit?usp=sharing )
 
@@ -30,7 +30,7 @@ To install CyperfX, follow these simple steps:
 
 Once installed, CyperfX can be run with the following command:
 ```
-python main.py
+python cyperfx.py
 ```
 
 After launching the application, users can:
@@ -52,7 +52,7 @@ We welcome contributions from the community to enhance CyperfX further. To contr
 
 ## Licensing
 
-CyperfX is licensed under the [## License](N/A). 
+CyperfX is licensed under the [## License](lN/A). 
 
 
 CyperfX is a project by Kagiso Motlhaoleng. Thank you for your interest and support! If you have any questions or feedback, feel free to reach out.
