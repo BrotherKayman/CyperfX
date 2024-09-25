@@ -1,3 +1,5 @@
+![CyperfX UI](./CyperfX.png)
+
 # CyperfX - Empowering System Integrity and Security
 
 ## Introduction
@@ -5,9 +7,7 @@
 CyperfX a comprehensive solution designed to empower users in monitoring system performance and detecting potential threats. CyperfX provides real-time insights into system health, enabling users to maintain system integrity and security with ease.
 
 ### Author: Kagiso Motlhaoleng  
-### Date: 16 May 2024  
-
-![CyperfX Image](/CyperfX.png)
+### Date: 16 May 2024
 
 - [View Presentation Slides](https://docs.google.com/presentation/d/14nVpC4UVE0jMFtQEHzXDpbqhgvn2BWD4hFFSx-BPy1Y/edit?usp=sharing)
 
