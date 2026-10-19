@@ -1,0 +1,18 @@
+[package]
+name = "cyperfx-version-2"
+version = "0.1.0"
+description = "CyperfX technician diagnostics desktop application"
+authors = ["CyperfX"]
+edition = "2021"
+
+[lib]
+name = "cyperfx_version_2_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
